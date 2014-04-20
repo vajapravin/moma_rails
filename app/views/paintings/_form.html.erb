@@ -1,0 +1,38 @@
+<%= form_for(@painting) do |f| %>
+  <% if @painting.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@painting.errors.count, "error") %> prohibited this painting from being saved:</h2>
+
+      <ul>
+      <% @painting.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, class: "form-control", required: "true", autofocus: true %>
+  </div>
+  <div class="form-group">
+    <%= f.label :year %><br>
+    <%= f.text_field :year, class: "form-control", required: "true" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :image_url %><br>
+    <%= f.url_field :image_url, class: "form-control", required: "true" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :artist_id %><br>
+    <% if @painting.artist.nil? %>
+      <%= select_tag :artist_id, options_for_select(Artist.all.collect{ |u| [u.name, u.id]}), {:class =>"form-control", required: "true", prompt: "Select Artist"} %>
+    <% else %>
+      <%= select_tag :artist_id, options_for_select(Artist.all.collect{ |u| [u.name, u.id]}, :selected => @painting.artist.id), {:class =>"form-control", required: "true", prompt: "Select Artist"} %>
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= f.submit :save, class: "btn btn-primary" %>
+    <%= link_to :back, paintings_path, class: "btn btn-default" %>
+  </div>
+<% end %>
